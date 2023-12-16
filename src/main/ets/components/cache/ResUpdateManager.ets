@@ -32,16 +32,22 @@ class ResUpdateManager {
       // 2. 本地是否有zip离线包
       let tempZipFile = fu.getTempZipFile(appId, version);
       if (fs.accessSync(tempZipFile)) {
-        console.debug(`==================离线zip包已存在`)
-        if (!sync) { // 非同步更新模式下, 如果本地有下载好的离线zip包, 不处理
-          return Promise.resolve(true);
-        }
-        if (await this.unzip(appId, version)) {
-          resolve(true);
-          return;
-        }
+        // 2.1 完整性校验
+        if ((await fu.getFileMD5(tempZipFile)) == hash) {
+          console.debug(`==================离线zip包已存在, 完整性校验通过`)
+          if (!sync) { // 非同步更新模式下, 如果本地有下载好的离线zip包, 不处理
+            return Promise.resolve(true);
+          }
 
-        console.debug(`==================解压离线失败，删除源文件`)
+          // 2.2 解压
+          if (await this.unzip(appId, version)) {
+            resolve(true);
+            return;
+          }
+          console.debug(`==================解压离线失败，删除源文件`)
+        } else {
+          console.debug(`==================离线zip包已存在, 文件损坏, 删除源文件`)
+        }
         // 解压失败后，删除源文件
         fs.rmdirSync(tempZipFile)
       }
@@ -105,10 +111,17 @@ class ResUpdateManager {
           task.on('progress', (receivedSize: number, totalSize: number) => {
             console.info(`download progress: ${receivedSize}/${totalSize}`);
           })
-          task.on('complete', () => {
+          task.on('complete', async () => {
             console.info(`download success: ${appId}`);
             // 校验文件是否完整
             if (!fs.accessSync(zipFile)) {
+              resolve(false);
+              return;
+            }
+            if ((await fu.getFileMD5(zipFile)) != hash) {
+              console.info(`file: ${appId}, ${zipFile}, hash verify failed`);
+              // 完整性校验失败，删除源文件
+              await fs.rmdir(zipFile)
               resolve(false);
               return;
             }

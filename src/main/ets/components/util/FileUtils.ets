@@ -1,5 +1,6 @@
 import common from '@ohos.app.ability.common';
 import fs from '@ohos.file.fs';
+import Hash from '@ohos.file.hash';
 
 /**
  * 文件目录操作
@@ -35,6 +36,32 @@ class FileUtils {
    */
   getLockFile(appId: string, version: string) {
     return this.getCacheDir(appId) + '/.lock_' + version;
+  }
+
+  /**
+   * 文件夹MD5值
+   */
+  getFileMD5(path: string): Promise<string> {
+    return new Promise<string>(async (resolve, _) => {
+      Hash.hash(path, "md5").then((str) => {
+        resolve(str)
+      }).catch(() => {
+        resolve('')
+      })
+    });
+  }
+
+  /**
+   * 文件夹SHA256值
+   */
+  getFileSHA256(path: string): Promise<string> {
+    return new Promise<string>(async (resolve, _) => {
+      Hash.hash(path, "md5").then((str) => {
+        resolve(str)
+      }).catch(() => {
+        resolve('')
+      })
+    });
   }
 
   /**

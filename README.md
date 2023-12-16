@@ -1,8 +1,8 @@
 
-## HarmonyOS Next 离线包管理
+## HarmonyOS Next Web离线包管理
 
 
-#### 组建测试代码
+#### 组件测试代码
 ```ts
 import { WebViewComponent } from '@ohos/library_webview';
 import { ResCacheManager } from '@ohos/library_webview';
