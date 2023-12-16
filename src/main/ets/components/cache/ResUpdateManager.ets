@@ -5,7 +5,6 @@ import zlib from '@ohos.zlib';
 import { BusinessError } from '@ohos.base';
 import fu from '../util/FileUtils';
 import { PackageConfig } from '../model/PackageConfig';
-import ResCacheManager from './ResCacheManager';
 
 /**
  * 离线缓存下载管理
@@ -19,8 +18,6 @@ class ResUpdateManager {
     let url = config.url;
     let hash = config.hash;
     console.debug(`==================checkUpdate: ${appId}, ${domain}, ${name}, ${version}, ${url}, ${hash}, ${sync}`)
-
-    ResCacheManager.addAppDomain(appId, domain)
 
     // 1. 本地是否有离线包
     if (fs.accessSync(fu.getLockFile(appId, version))) {

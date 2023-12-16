@@ -4,6 +4,8 @@ import fs from '@ohos.file.fs';
 import uri from '@ohos.uri';
 import fu from '../util/FileUtils';
 import mtu from '../util/MimeTypeUtils';
+import ResUpdateManager from './ResUpdateManager';
+import { PackageConfig } from '../model/PackageConfig';
 
 /**
  * 缓存管理
@@ -22,13 +24,12 @@ class ResCacheManager {
     this.initial = true
   }
 
-  public addAppDomain(appId: string, domain: string) {
-    console.debug(`=======================addAppDomain: ${domain}, ${appId}`)
-    this.domainMapped.set(domain, appId)
-  }
+  public checkUpdate(ctx: common.Context, config: PackageConfig, sync: boolean /* true 当次生效, false 下次生效 */): Promise<boolean> {
 
-  public getAppIdByDomain(domain: string): string {
-    return this.domainMapped.get(domain)
+    this.domainMapped.set(config.domain, config.appId)
+    console.debug(`=======================addAppDomain: ${config.domain}, ${config.appId}`)
+
+    return ResUpdateManager.checkUpdate(ctx, config, sync)
   }
 
   public getCacheFromRequest(request: WebResourceRequest) {
@@ -36,11 +37,13 @@ class ResCacheManager {
 
     let temp = new uri.URI(request.getRequestUrl())
 
-    let appId = this.getAppIdByDomain(temp.host);
+    // for test start (请使用合适项目的目录映射逻辑)
+    let appId = this.domainMapped.get(temp.host);
     console.debug('============================appId: ' + appId + ', ' + temp.host)
     if (!appId) {
       return null;
     }
+    // for test end
 
     let path = fu.getCacheDir(appId) + temp.path
     if (temp.path.endsWith("/")) {

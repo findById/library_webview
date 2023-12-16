@@ -1,10 +1,9 @@
 import web_webview from '@ohos.web.webview';
 import router from '@ohos.router';
 import ResCacheManager from '../cache/ResCacheManager';
-import request from '@ohos.request';
 
 /**
- * 测试组建
+ * 测试组件
  */
 @Entry
 @Component

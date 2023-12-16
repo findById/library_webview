@@ -6,7 +6,6 @@
 ```ts
 import { WebViewComponent } from '@ohos/library_webview';
 import { ResCacheManager } from '@ohos/library_webview';
-import { ResUpdateManager } from '@ohos/library_webview';
 import { PackageConfig } from '@ohos/library_webview';
 
 @Entry
@@ -18,7 +17,7 @@ struct WebPageIndex {
     // 初始化缓存管理器
     ResCacheManager.init(getContext())
     // 更新本地离线包
-    ResUpdateManager.checkUpdate(getContext(), new PackageConfig(
+    ResCacheManager.checkUpdate(getContext(), new PackageConfig(
       "appId", "域名", "应用名", "版本号", "离线zip包下载地址", "zip包哈希值"
     ), true)
   }
