@@ -1,0 +1,12 @@
+{
+  "string": [
+    {
+      "name": "page_show",
+      "value": "page from package"
+    },
+    {
+      "name": "module_net_desc",
+      "value": "module new desc"
+    }
+  ]
+}

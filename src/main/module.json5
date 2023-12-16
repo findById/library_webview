@@ -1,0 +1,23 @@
+{
+  "module": {
+    "name": "library_webview",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet",
+      "2in1"
+    ],
+    "requestPermissions": [
+      {
+        "name" : "ohos.permission.INTERNET",
+        "reason": "$string:module_net_desc",
+        "usedScene": {
+          "abilities": [
+            "DefaultAbility"
+          ],
+          "when":"inuse"
+        }
+      }
+    ]
+  }
+}
