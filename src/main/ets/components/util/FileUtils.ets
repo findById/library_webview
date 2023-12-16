@@ -56,7 +56,7 @@ class FileUtils {
    */
   getFileSHA256(path: string): Promise<string> {
     return new Promise<string>(async (resolve, _) => {
-      Hash.hash(path, "md5").then((str) => {
+      Hash.hash(path, "sha256").then((str) => {
         resolve(str)
       }).catch(() => {
         resolve('')

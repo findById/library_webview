@@ -18,8 +18,8 @@ struct WebPageIndex {
     ResCacheManager.init(getContext())
     // 更新本地离线包
     ResCacheManager.checkUpdate(getContext(), new PackageConfig(
-      "appId", "域名", "应用名", "版本号", "离线zip包下载地址", "zip包哈希值"
-    ), true)
+      "appId", "域名", "应用名", "版本号", "离线zip包下载地址", "zip包哈希值(MD5)"
+    ), true /* true 当次生效, false 下次生效 */)
   }
 
   build() {
